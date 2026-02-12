@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Valentine ❤️</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg, #ff4d6d, #ffb3c6);
+  color: white;
+  text-align: center;
+  overflow-x: hidden;
+}
+
+.page {
+  display: none;
+  min-height: 100vh;
+  padding: 25px;
+  box-sizing: border-box;
+}
+
+.page.active {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+h1 { font-size: 2rem; }
+p { font-size: 1.1rem; margin: 15px 0; }
+
+button {
+  background: white;
+  color: #ff2f6d;
+  border: none;
+  padding: 14px;
+  margin: 8px auto;
+  width: 85%;
+  max-width: 320px;
+  border-radius: 30px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+input {
+  padding: 12px;
+  margin: 8px;
+  width: 70%;
+  max-width: 240px;
+  border-radius: 12px;
+  border: none;
+  text-align: center;
+  font-size: 1rem;
+}
+
+.floating {
+  position: fixed;
+  bottom: -20px;
+  animation: float 8s linear infinite;
+  font-size: 22px;
+  opacity: 0.9;
+}
+
+@keyframes float {
+  0% { transform: translateY(0); opacity: 1; }
+  100% { transform: translateY(-120vh); opacity: 0; }
+}
+
+.countdown {
+  font-size: 1.4rem;
+  margin: 15px 0;
+  background: rgba(255,255,255,0.15);
+  padding: 15px;
+  border-radius: 15px;
+}
+
+.confetti {
+  position: fixed;
+  width: 10px;
+  height: 10px;
+  animation: fall 3s linear forwards;
+}
+
+@keyframes fall {
+  0% { transform: translateY(-20px) rotate(0deg); }
+  100% { transform: translateY(120vh) rotate(720deg); }
+}
+
+.error { color: #ffe3ea; }
+</style>
+</head>
+
+<body>
+
+<!-- Background Music -->
+<audio id="music" loop>
+  <source src="love.mp3" type="audio/mpeg">
+</audio>
+
+<!-- PAGE 1 -->
+<div class="page active" id="page1">
+  <h1>Hello Olorato Keipeile 🌹❤️</h1>
+  <p>How are you feeling today, my love?</p>
+  <button onclick="mood('good')">😊 Happy</button>
+  <button onclick="mood('good')">😌 Calm</button>
+  <button onclick="mood('bad')">😢 Sad</button>
+  <button onclick="mood('bad')">😠 Angry</button>
+</div>
+
+<!-- PAGE 2 -->
+<div class="page" id="page2">
+  <h1 id="moodTitle"></h1>
+  <p id="moodText"></p>
+  <button onclick="nextPage(3)">Continue 💕</button>
+</div>
+
+<!-- PAGE 3 -->
+<div class="page" id="page3">
+  <h1>Are you ready for the challenge? 💘</h1>
+  <button onclick="nextPage(4)">😍 Ready</button>
+  <button onclick="alert('Take your time sweetheart 😘')">🙈 Not ready</button>
+</div>
+
+<!-- PAGE 4 -->
+<div class="page" id="page4">
+  <h1>Countdown to Valentine’s ❤️</h1>
+  <div class="countdown" id="countdown"></div>
+  <button onclick="nextPage(5)">Continue 🌹</button>
+</div>
+
+<!-- PAGE 5 -->
+<div class="page" id="page5">
+  <h1>One last step 🗝️</h1>
+  <p>Enter our anniversary date</p>
+  <input id="month" placeholder="Month (MM)">
+  <input id="day" placeholder="Day (DD)">
+  <button onclick="checkDate()">Unlock ❤️</button>
+  <div class="error" id="error"></div>
+</div>
+
+<!-- PAGE 6 -->
+<div class="page" id="page6">
+  <h1>Olorato Keipeile ❤️🌹</h1>
+  <p>Will you be my Valentine <strong>sthandwa sam</strong>? 💖💘</p>
+  <button onclick="yes()">YES 💕</button>
+  <button onclick="no()">NO 🙈</button>
+</div>
+
+<!-- PAGE 7 -->
+<div class="page" id="page7">
+  <h1>Thank you my love ❤️🌹</h1>
+  <p>
+    Thank you for saying yes.  
+    I love you very much and I wish we were spending this Valentine’s together in person. 💞
+  </p>
+  <p>
+    That’s all from your man,<br>
+    <strong>Mr Mokgele</strong> 😌❤️
+  </p>
+  <p>Bye sweetheart 💋</p>
+</div>
+
+<script>
+const music = document.getElementById("music");
+
+function nextPage(n) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page' + n).classList.add('active');
+}
+
+function mood(type) {
+  music.volume = 0.4;
+  music.play();
+  nextPage(2);
+  if (type === 'good') {
+    moodTitle.innerText = "That makes me happy! 🎉❤️";
+    moodText.innerText = "Your happiness means everything to me 🥰";
+  } else {
+    moodTitle.innerText = "Come here my love 🤍";
+    moodText.innerText = "No matter what, I'm always here for you 🌹❤️";
+  }
+}
+
+function checkDate() {
+  if (month.value === "06" && day.value === "25") {
+    nextPage(6);
+  } else {
+    error.innerText = "Try again my love 💔";
+  }
+}
+
+function no() {
+  alert("I’m asking again 😌❤️");
+}
+
+function yes() {
+  nextPage(7);
+  launchConfetti();
+}
+
+/* Countdown to Valentine’s Day */
+const target = new Date(new Date().getFullYear(), 1, 14);
+setInterval(() => {
+  const now = new Date();
+  const diff = target - now;
+  const d = Math.floor(diff / (1000*60*60*24));
+  const h = Math.floor((diff / (1000*60*60)) % 24);
+  const m = Math.floor((diff / (1000*60)) % 60);
+  const s = Math.floor((diff / 1000) % 60);
+  countdown.innerText = `${d} Days ${h} Hours ${m} Minutes ${s} Seconds`;
+}, 1000);
+
+/* Confetti */
+function launchConfetti() {
+  for (let i = 0; i < 120; i++) {
+    const c = document.createElement("div");
+    c.className = "confetti";
+    c.style.left = Math.random() * 100 + "vw";
+    c.style.background = ["#ff2f6d","#fff","#ffd1dc"][Math.floor(Math.random()*3)];
+    c.style.animationDuration = (Math.random()*2 + 2) + "s";
+    document.body.appendChild(c);
+    setTimeout(() => c.remove(), 3000);
+  }
+}
+
+/* Floating hearts & roses */
+setInterval(() => {
+  const f = document.createElement("div");
+  f.className = "floating";
+  f.innerText = Math.random() > 0.5 ? "❤️" : "🌹";
+  f.style.left = Math.random() * 100 + "vw";
+  document.body.appendChild(f);
+  setTimeout(() => f.remove(), 8000);
+}, 400);
+</script>
+
+</body>
+</html>
